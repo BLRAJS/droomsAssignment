@@ -1,0 +1,69 @@
+
+
+<div class="container pt-5">
+
+
+
+    <form class="pt-5" [formGroup]="searchForm">
+      <div class="md-form mt-0">
+        <input list="list" class="form-control" placeholder="Search" type="search" formControlName='searchInput'>
+        <datalist id="list">
+          <div *ngFor="let data of searchAutocomplete">
+            <option value="{{data?.login}}">
+          </div>
+        </datalist>
+      </div>
+    </form>
+    <div class="pt-5" *ngIf="searchForm.get('searchInput').errors?.minlength" class="text-danger">
+        <h1>Not enough information</h1>   
+    </div> 
+    <div class="pt-5" *ngIf="searchForm.get('searchInput').errors?.pattern" class="text-danger">
+        <h1>No special chars please</h1>
+    </div>  
+
+    <div class="pt-5" *ngIf="usersList">
+        <div
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="1000"
+        (scrolled)="onScroll()">
+        <div class="row userMain">
+
+        <div *ngFor="let user of usersList" class="col-md-3 col-sm-4">
+            <div class="userBlock">
+
+            <div class="backgrounImg">
+                <img src="https://preview.ibb.co/miQjb7/photography4.jpg">
+            </div>
+            <div class="userImg">
+                <img [src]="user.avatar_url">
+            </div>
+          
+            <div class="userDescription">
+              <h5>{{user.login | uppercase}}</h5>
+              <p>{{user.html_url }} </p>
+             
+              
+               <div class="followrs">
+                  <span class="number">{{user.id}}</span>
+                   <span><small>{{user.node_id }}</small></span>
+               </div>
+               <a [routerLink]="['/user',user.login]">
+                   <button class="btn">Full Profile</button>
+               </a>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+<div *ngIf="usersLoader">
+  <div class="ring">
+      Loading
+      <span></span>
+    </div>
+  </div>
+
